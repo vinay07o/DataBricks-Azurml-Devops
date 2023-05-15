@@ -1,5 +1,4 @@
 """Helper function for pyspark"""
-from pyspark.dbutils import DBUtils
 import IPython
 
 dbutils = IPython.get_ipython().user_ns["dbutils"]
@@ -10,7 +9,7 @@ def mount_storage(container_name, storage_account_name, mount_point_name, accoun
         dbutils.fs.mount(source=f"wasbs://{container_name}@{storage_account_name}.blob.core.windows.net/",
                 mount_point=f"/mnt/{mount_point_name}",
                 extra_configs={f"fs.azure.account.key.{storage_account_name}.blob.core.windows.net":account_key})
-    except Exception as e:
+    except Exception:
         print(f"already mounted. Try to unmount first /mnt/{mount_point_name}")
     return [i[0] for i in dbutils.fs.ls(f"/mnt/{mount_point_name}")]
 
