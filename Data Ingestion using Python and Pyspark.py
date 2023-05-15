@@ -1,7 +1,12 @@
 # Databricks notebook source
 import pandas as pd
 
+from pyspark.sql import SparkSession
+
 from utils import mount_storage, unmount_storage
+
+# Create a SparkSession object
+spark = SparkSession.builder.appName("Datainjesion").getOrCreate()
 
 # COMMAND ----------
 
