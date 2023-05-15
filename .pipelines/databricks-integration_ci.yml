@@ -30,12 +30,8 @@ stages:
     - bash: 'pip install --user -r ./requirements.txt'
       displayName: 'Installing Dependencies'
     
-    - bash: '/home/vsts_azpcontainer/.local/bin/black ./ --config ./black.toml'
-    - bash: '/home/vsts_azpcontainer/.local/bin/isort ./ --settings-file ./setup.cfg'
-      displayName: 'Running black & isort for Auto formatting for service codes'
-
-    - bash: '/home/vsts_azpcontainer/.local/bin/black ./ --config ./black.toml' 
-    - bash: '/home/vsts_azpcontainer/.local/bin/isort ./ --settings-file ./setup.cfg'
+    - bash: '/home/vsts_azpcontainer/.local/bin/black ./utils --config ./black.toml' 
+    - bash: '/home/vsts_azpcontainer/.local/bin/isort ./utils --settings-file ./setup.cfg'
       displayName: 'Running black & isort for Auto formatting for supporting function'
 
     - template: code-quality-template.yml
