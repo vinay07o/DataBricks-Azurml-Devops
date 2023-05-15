@@ -1,4 +1,6 @@
 # Databricks notebook source
+import pandas as pd
+
 from utils import mount_storage, unmount_storage
 
 # COMMAND ----------
@@ -28,7 +30,6 @@ spark_df.display()
 # COMMAND ----------
 
 # Read data using Python pandas
-import pandas as pd
 df = pd.read_csv("/dbfs/mnt/blobstorage/insurance_claims.csv")
 
 df.head()
