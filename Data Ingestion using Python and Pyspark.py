@@ -26,9 +26,11 @@ mount_storage(container_name, storage_account_name, mount_point_name, account_ke
 # COMMAND ----------
 
 # Read data using Spark
-spark_df = spark.read.format("csv")\
-    .option("header", "true") \
+spark_df = (
+    spark.read.format("csv")
+    .option("header", "true")
     .load("dbfs:/mnt/blobstorage/insurance_claims.csv")
+)
 
 spark_df.display()
 
