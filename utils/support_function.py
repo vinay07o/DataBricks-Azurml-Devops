@@ -36,7 +36,9 @@ def unmount_storage(mount_path):
 
 def read_sql(jdbcHostName, jdbcPort, jdbcDataBase, jdbcUserName, jdbcPassword, jdbcDriver,
              table_name, read_programming="Pyspark"):
-    jdbcUrl = f"jdbc:sqlserver://{jdbcHostName}:{jdbcPort};databaseName={jdbcDataBase};user={jdbcUserName};password={jdbcPassword}"
+    jdbcUrl = "jdbc:sqlserver://{}:{};databaseName={};user={};password={}".format(
+        jdbcHostName, jdbcPort, jdbcDataBase, jdbcUserName, jdbcPassword
+    )
 
     if read_programming.lower() == "pyspark":
         df = spark.read.format("jdbc").option("url", jdbcUrl).option("dbtable", table_name).load()
