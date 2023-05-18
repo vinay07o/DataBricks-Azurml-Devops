@@ -10,9 +10,9 @@ trigger:
     - main
     - Develop
 
-    paths:
-      include:
-      - utils/
+  paths:
+    include:
+    - utils/
 
 variables:
 - group: devopsforai-aml-vg
