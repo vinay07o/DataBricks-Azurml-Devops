@@ -1,0 +1,43 @@
+resources:
+  containers:
+  - container: mlops
+    image: mcr.microsoft.com/mlops/python:latest
+
+pr: none
+trigger:
+  branches:
+    include:
+    - main
+    - Develop
+
+  paths:
+    include:
+    - utils/
+
+variables:
+- group: devopsforai-aml-vg
+
+pool:
+  vmImage: ubuntu-latest
+  name: Azure Pipelines
+
+stages:
+- stage: 'Model_CI'
+  displayName: 'Model CI'
+  jobs:
+  - job: "Model_CI_Pipeline"
+    displayName: "Model CI Pipeline"
+    container: mlops
+    timeoutInMinutes: 0
+    steps:
+
+    - bash: 'pip install --user -r ./requirements.txt'
+      displayName: 'Installing Dependencies'
+    
+    - bash: '/home/vsts_azpcontainer/.local/bin/black ./utils --config ./black.toml'
+      displayName: 'Running black Auto formatting for supporting function'
+
+    - bash: '/home/vsts_azpcontainer/.local/bin/isort ./utils --settings-file ./setup.cfg'
+      displayName: 'Running isort for Auto imports arrangement for supporting function'
+
+    - template: code-quality-template.yml
