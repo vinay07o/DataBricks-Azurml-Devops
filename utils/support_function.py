@@ -4,6 +4,7 @@ import pandas as pd
 import pymssql
 import warnings
 from pyspark.sql import SparkSession
+
 warnings.filterwarnings("ignore")
 
 # Create a SparkSession object
@@ -34,23 +35,42 @@ def unmount_storage(mount_path):
     else:
         print(f"Not Found {mount_path}. Mount first.")
 
-def read_sql(jdbcHostName, jdbcPort, jdbcDataBase, jdbcUserName, jdbcPassword, jdbcDriver,
-             table_name, read_programming="Pyspark"):
+
+def read_sql(
+    jdbcHostName,
+    jdbcPort,
+    jdbcDataBase,
+    jdbcUserName,
+    jdbcPassword,
+    jdbcDriver,
+    table_name,
+    read_programming="Pyspark",
+):
     jdbcUrl = "jdbc:sqlserver://{}:{};databaseName={};user={};password={}".format(
         jdbcHostName, jdbcPort, jdbcDataBase, jdbcUserName, jdbcPassword
     )
 
     if read_programming.lower() == "pyspark":
-        df = spark.read.format("jdbc").option("url", jdbcUrl).option("dbtable", table_name).load()
+        df = (
+            spark.read.format("jdbc")
+            .option("url", jdbcUrl)
+            .option("dbtable", table_name)
+            .load()
+        )
     elif read_programming.lower() == "python":
-        con = pymssql.connect(server=jdbcHostName,user=jdbcUserName,password=jdbcPassword,database=jdbcDataBase)
+        con = pymssql.connect(
+            server=jdbcHostName,
+            user=jdbcUserName,
+            password=jdbcPassword,
+            database=jdbcDataBase,
+        )
         cursor = con.cursor()
 
         query = f"SELECT * FROM {table_name}"
         cursor.execute(query)
         df = pd.read_sql(query, con)
         con.close()
-    
+
     else:
         raise KeyError("connection failed")
 
