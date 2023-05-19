@@ -73,5 +73,4 @@ def read_sql(
 
     else:
         raise KeyError("connection failed")
-
     return df
